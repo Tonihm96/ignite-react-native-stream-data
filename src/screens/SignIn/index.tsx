@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTheme } from 'styled-components';
-import { Fontisto } from '@expo/vector-icons'
+import { Fontisto } from '@expo/vector-icons';
 import { ActivityIndicator, Alert, Modal, View } from 'react-native';
 
 import { useAuth } from '../../hooks/useAuth';
@@ -8,17 +8,17 @@ import { useAuth } from '../../hooks/useAuth';
 import LoginBannerImg from '../../assets/images/login.svg';
 import LogoImg from '../../assets/images/logo.svg';
 
-import { 
+import {
   Container,
   Content,
-  LoginBanner, 
-  LoginInfo, 
-  Header, 
-  Partner, 
-  Description, 
+  LoginBanner,
+  LoginInfo,
+  Header,
+  Partner,
+  Description,
   SignInButton,
   SignInButtonIcon,
-  SignInButtonText 
+  SignInButtonText
 } from './styles';
 
 export function SignIn() {
@@ -26,31 +26,38 @@ export function SignIn() {
   const theme = useTheme();
 
   // creates a function to handle sign in
+  function handleSignIn() {
     // try to call and wait signIn
-    // if fails, display an Alert with the title "Erro SignIn" and message "Ocorreu um erro ao tentar logar no app"
+    try {
+      signIn();
+    } catch (error) {
+      // if fails, display an Alert with the title "Erro SignIn" and message "Ocorreu um erro ao tentar logar no app"
+      Alert.alert('Erro SignIn', 'Ocorreu um erro ao tentar logar no app');
+    }
+  }
 
-    // const signInButtonProps = {
-    //   onPress: your-signIn-function
-    // }
+  const signInButtonProps = {
+    onPress: handleSignIn
+  };
 
   return (
     <Container
       from={{
         opacity: 0,
-        scale: 0.9,
+        scale: 0.9
       }}
       animate={{
         opacity: 1,
-        scale: 1,
+        scale: 1
       }}
       exit={{
         opacity: 0,
-        scale: 0.9,
+        scale: 0.9
       }}
     >
       <Content>
         <LoginBanner>
-          <LoginBannerImg width="100%" />
+          <LoginBannerImg width='100%' />
         </LoginBanner>
 
         <LoginInfo>
@@ -61,35 +68,48 @@ export function SignIn() {
 
           <Description>
             Veja dados{'\n'}
-            interessantes sobre{'\n'}
-            o mundo da Twitch
+            interessantes sobre{'\n'}o mundo da Twitch
           </Description>
 
-          {/* <SignInButton {...signInButtonProps}>
+          <SignInButton {...signInButtonProps}>
             <SignInButtonIcon>
-              Verify if isLoggingIn is true
-              If it is, show an ActivityIndicator
-              Otherwise, show Fontisto's twitch icon
+              {
+                //Verify if isLoggingIn is true
+                isLoggingIn ? (
+                  //If it is, show an ActivityIndicator
+                  <ActivityIndicator color={theme.colors.white} size={20} />
+                ) : (
+                  //Otherwise, show Fontisto's twitch icon
+                  <Fontisto
+                    name='twitch'
+                    color={theme.colors.white}
+                    size={20}
+                    style={{ marginRight: 1 }}
+                  />
+                )
+              }
             </SignInButtonIcon>
 
             <SignInButtonText>
-              Verify if isLoggingIn is true
-              If it is, show "Entrando..."
-              Otherwise, show "Entrar com Twitch"
+              {
+                //Verify if isLoggingIn is true If it is, show "Entrando..."
+                isLoggingIn
+                  ? 'Entrando...'
+                  : //Otherwise, show "Entrar com Twitch"
+                    'Entrar com Twitch'
+              }
             </SignInButtonText>
-          </SignInButton> */}
+          </SignInButton>
         </LoginInfo>
       </Content>
 
-      <Modal 
-        animationType="fade"
+      <Modal
+        animationType='fade'
         visible={isLoggingIn}
         statusBarTranslucent
         transparent
       >
-        <View
-          style={{ flex: 1, backgroundColor: 'rgba(14, 14, 16, 0.5)' }}
-        />
+        <View style={{ flex: 1, backgroundColor: 'rgba(14, 14, 16, 0.5)' }} />
       </Modal>
     </Container>
   );
